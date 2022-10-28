@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Mango.Services.ProductAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +7,6 @@ namespace Mango.Services.ProductAPI.DbContexts
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
-        public DbSet<Product>? Products { get; set; }
+        public DbSet<Product> Products { get; set; } = null!;
     }
 }

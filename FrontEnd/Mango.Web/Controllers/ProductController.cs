@@ -17,6 +17,7 @@ namespace Mango.Web.Controllers
             _productService = productService;
         }
 
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             List<ProductDto> products = new List<ProductDto>();
@@ -28,6 +29,28 @@ namespace Mango.Web.Controllers
             }
 
             return View(products);
+        }
+
+        [HttpGet("Create")]
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        [HttpPost("Create")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ProductDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _productService.CreateProductAsync<ResponseDto>(model);
+                if (response != null && response.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View(model);
         }
     }
 }

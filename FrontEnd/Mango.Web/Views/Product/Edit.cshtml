@@ -1,12 +1,13 @@
 ﻿@model Mango.Web.Models.ProductDto
 @{
-    ViewData["Title"] = "Create Product";
+    ViewData["Title"] = "Edit Product";
 }
 
-<form asp-action="Create">
+<form asp-action="Edit">
+    <input asp-for="ProductId" hidden />
     <br />
     <div class="container border p-3">
-        <h1 class="text-warning text-center">Create Product</h1>
+        <h1 class="text-warning text-center">Edit Product</h1>
         <hr />
         <div class="row">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -49,7 +50,7 @@
                 <a asp-action="Index" class="btn-outline-secondary btn form-control ">Back</a>
             </div>
             <div class="col-5">
-                <input type="submit" value="Create" class="btn btn-success form-control" />
+                <input type="submit" value="Edit" class="btn btn-success form-control" />
             </div>
         </div>
         <div>

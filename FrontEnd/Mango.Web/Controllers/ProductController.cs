@@ -23,7 +23,7 @@ namespace Mango.Web.Controllers
             List<ProductDto> products = new List<ProductDto>();
             var response = await _productService.GetAllProductsAsync<ResponseDto>();
 
-            if (response != null && response.IsSuccess)
+            if (response?.Result != null && response.IsSuccess)
             {
                 products = JsonConvert.DeserializeObject<List<ProductDto>>(response.Result.ToString());
             }
@@ -31,48 +31,34 @@ namespace Mango.Web.Controllers
             return View(products);
         }
 
-        [HttpGet("Create")]
-        public async Task<IActionResult> Create()
+        [HttpGet("Item")]
+        public async Task<IActionResult> Item(int? productId)
         {
+            if (productId != null)
+            {
+                var response = await _productService.GetProductByIdAsync<ResponseDto>(productId.Value);
+                if (response?.Result != null && response.IsSuccess)
+                {
+                    ProductDto model = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
+                    return View(model);
+                }
+
+                return NotFound();
+            }
+
             return View();
         }
 
-        [HttpPost("Create")]
+        [HttpPost("Item")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductDto model)
+        public async Task<IActionResult> Item(ProductDto model)
         {
             if (ModelState.IsValid)
             {
-                var response = await _productService.CreateProductAsync<ResponseDto>(model);
-                if (response != null && response.IsSuccess)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-            }
+                var response = model.ProductId > 0
+                    ? await _productService.UpdateProductAsync<ResponseDto>(model)
+                    : await _productService.CreateProductAsync<ResponseDto>(model);
 
-            return View(model);
-        }
-
-        [HttpGet("Edit")]
-        public async Task<IActionResult> Edit(int productId)
-        {
-            var response = await _productService.GetProductByIdAsync<ResponseDto>(productId);
-            if (response != null && response.IsSuccess)
-            {
-                ProductDto model = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
-                return View(model);
-            }
-
-            return NotFound();
-        }
-
-        [HttpPost("Edit")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ProductDto model)
-        {
-            if (ModelState.IsValid)
-            {
-                var response = await _productService.UpdateProductAsync<ResponseDto>(model);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(Index));
@@ -86,7 +72,7 @@ namespace Mango.Web.Controllers
         public async Task<IActionResult> Delete(int productId)
         {
             var response = await _productService.GetProductByIdAsync<ResponseDto>(productId);
-            if (response != null && response.IsSuccess)
+            if (response?.Result != null && response.IsSuccess)
             {
                 ProductDto model = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
                 return View(model);

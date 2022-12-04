@@ -1,58 +1,18 @@
 ﻿@model Mango.Web.Models.ProductDto
-@{
-    ViewData["Title"] = "Delete Product";
-}
 
-<form asp-action="Delete">
-    <input asp-for="ProductId" hidden />
-    <br />
-    <div class="container border p-3">
-        <h1 class="text-warning text-center">Delete Product</h1>
-        <hr />
-        <div class="row">
-            <div class="col-2">
-                <label asp-for="Name" class="control-label pt-2" style="font-size:20px;"></label>
+<div class="container">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body" style="overflow-y: auto">
+                <form asp-action="Delete">
+                    <input asp-for="ProductId" hidden />
+                    <p class="px-2">Do you really want to delete the product "@Model.Name"?</p>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+                </form>
             </div>
-            <div class="col-10 pb-3">
-                <input asp-for="Name" disabled class="form-control" />
-            </div>
-            <div class="col-2">
-                <label asp-for="CategoryName" class="control-label pt-2" style="font-size:20px;"></label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="CategoryName" disabled class="form-control" />
-            </div>
-            <div class="col-2">
-                <label asp-for="Description" class="control-label pt-2" style="font-size:20px;"></label>
-            </div>
-            <div class="col-10 pb-3">
-                <textarea asp-for="Description" disabled class="form-control" rows="5"></textarea>
-            </div>
-            <div class="col-2">
-                <label asp-for="ImageUrl" class="control-label pt-2" style="font-size:20px;"></label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="ImageUrl" disabled class="form-control" />
-            </div>
-            <div class="col-2">
-                <label asp-for="Price" class="control-label pt-2" style="font-size:20px;"></label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="Price" disabled class="form-control" />
-            </div>
-            <div class="col-5 offset-2">
-                <a asp-action="Index" class="btn-outline-secondary btn form-control ">Back</a>
-            </div>
-            <div class="col-5">
-                <input type="submit" value="Delete" class="btn btn-danger form-control" />
-            </div>
-        </div>
-        <div>
         </div>
     </div>
-    <br />
-</form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+</div>

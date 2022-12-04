@@ -1,6 +1,10 @@
+using Mango.Services.Identity.Configurations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDatabaseConfiguration(builder.Configuration);
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -17,7 +21,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllerRoute(

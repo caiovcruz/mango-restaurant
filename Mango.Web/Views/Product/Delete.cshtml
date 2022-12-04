@@ -1,0 +1,18 @@
+﻿@model Mango.Web.Models.ProductDto
+
+<div class="container">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body" style="overflow-y: auto">
+                <form asp-action="Delete">
+                    <input asp-for="ProductId" hidden />
+                    <p class="px-2">Do you really want to delete the product "@Model.Name"?</p>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

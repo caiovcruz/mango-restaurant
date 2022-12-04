@@ -1,4 +1,5 @@
 ﻿using Mango.Services.Identity.DbContexts;
+using Mango.Services.Identity.Initializer;
 using Mango.Services.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -28,6 +29,8 @@ namespace Mango.Services.Identity.Configurations
             .AddAspNetIdentity<ApplicationUser>();
 
             builder.AddDeveloperSigningCredential();
+
+            services.AddScoped<IDbInitializer, DbInitializer>();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Mango.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mango.Web.Controllers
 {
@@ -27,6 +28,19 @@ namespace Mango.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet("Login")]
+        [Authorize]
+        public IActionResult Login()
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost("Logout")]
+        public IActionResult Logout()
+        {
+            return SignOut("Cookies", "iodc");
         }
     }
 }

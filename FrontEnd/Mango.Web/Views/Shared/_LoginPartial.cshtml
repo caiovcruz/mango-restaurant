@@ -2,16 +2,30 @@
     @if (User.Identity?.IsAuthenticated == true)
     {
         <li class="nav-item">
-            <a class="nav-link" href="#">Hello @User.Identity.Name</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-action="Logout" asp-controller="Home">Logout</a>
+            <div class="dropdown show">
+                <a class="nav-link dropdown-toggle"
+               href="#"
+               role="button"
+               id="dropdownMenuUser"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">
+                    Hello @User.Identity.Name
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuUser">
+                    <a class="dropdown-item d-flex justify-content-between align-items-center" asp-action="Logout" asp-controller="Home">
+                        <span>Logout</span> <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </div>
+            </div>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link" asp-action="Login" asp-controller="Home">Login</a>
+            <a class="nav-link" asp-action="Login" asp-controller="Home">
+                <span class="pe-2">Login</span> <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
         </li>
     }
 </ul>

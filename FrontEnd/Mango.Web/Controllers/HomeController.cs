@@ -37,10 +37,10 @@ namespace Mango.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost("Logout")]
+        [HttpGet("Logout")]
         public IActionResult Logout()
         {
-            return SignOut("Cookies", "iodc");
+            return SignOut("Cookies", "oidc");
         }
     }
 }

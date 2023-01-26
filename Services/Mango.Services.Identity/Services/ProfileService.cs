@@ -50,6 +50,8 @@ namespace Mango.Services.Identity.Services
                     }
                 }
             }
+
+            context.IssuedClaims = claims;
         }
 
         public async Task IsActiveAsync(IsActiveContext context)

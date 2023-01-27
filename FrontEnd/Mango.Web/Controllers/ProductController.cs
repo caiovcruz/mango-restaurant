@@ -26,7 +26,7 @@ namespace Mango.Web.Controllers
 
             if (response?.Result != null && response.IsSuccess)
             {
-                products = JsonConvert.DeserializeObject<List<ProductDto>>(response.Result.ToString()!)!;
+                products = JsonConvert.DeserializeObject<List<ProductDto>>(response.Result.ToString());
             }
 
             return View(products);
@@ -76,7 +76,7 @@ namespace Mango.Web.Controllers
             var response = await _productService.GetProductByIdAsync<ResponseDto>(productId);
             if (response?.Result != null && response.IsSuccess)
             {
-                ProductDto model = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString()!)!;
+                ProductDto model = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
                 return View(model);
             }
 

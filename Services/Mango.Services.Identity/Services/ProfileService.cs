@@ -25,14 +25,11 @@ namespace Mango.Services.Identity.Services
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            string sub = context.Subject.GetSubjectId();
-            ApplicationUser user = await _userManager.FindByIdAsync(sub);
-            ClaimsPrincipal userClaims = await _userClaimsPrincipalFactory.CreateAsync(user);
+            var sub = context.Subject.GetSubjectId();
+            var user = await _userManager.FindByIdAsync(sub);
+            var userClaims = await _userClaimsPrincipalFactory.CreateAsync(user);
 
-            List<Claim> claims = userClaims.Claims.ToList();
-            claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
-            claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
-            claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
+            var claims = userClaims.Claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
 
             if (_userManager.SupportsUserRole)
             {

@@ -123,7 +123,7 @@ namespace IdentityServerHost.Quickstart.UI
                     await _events.RaiseAsync(new UserLoginSuccessEvent(
                         user.UserName, 
                         user.Id,
-                        user.UserName,
+                        $"{user.FirstName} {user.LastName}",
                         clientId: context?.Client.ClientId
                     ));
 
@@ -229,7 +229,7 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -260,19 +260,20 @@ namespace IdentityServerHost.Quickstart.UI
                     await _userManager.AddToRoleAsync(user, model.RoleName);
 
                     await _userManager.AddClaimsAsync(user, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, model.Username),
+                            new Claim(JwtClaimTypes.Name, $"{model.FirstName} {model.LastName}"),
+                            new Claim(JwtClaimTypes.PreferredUserName, model.Username),
                             new Claim(JwtClaimTypes.Email, model.Email),
-                            new Claim(JwtClaimTypes.FamilyName, model.LastName),
                             new Claim(JwtClaimTypes.GivenName, model.FirstName),
+                            new Claim(JwtClaimTypes.FamilyName, model.LastName),
                             new Claim(JwtClaimTypes.WebSite, "http://"+model.Username+".com"),
-                            new Claim(JwtClaimTypes.Role,"User") });
+                            new Claim(JwtClaimTypes.Role, model.RoleName) });
 
                     var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
                     var loginresult = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, lockoutOnFailure: true);
                     if (loginresult.Succeeded)
                     {
                         var checkuser = await _userManager.FindByNameAsync(model.Username);
-                        await _events.RaiseAsync(new UserLoginSuccessEvent(checkuser.UserName, checkuser.Id, checkuser.UserName, clientId: context?.Client.ClientId));
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(checkuser.UserName, checkuser.Id, $"{checkuser.FirstName} {checkuser.LastName}", clientId: context?.Client.ClientId));
 
                         if (context != null)
                         {

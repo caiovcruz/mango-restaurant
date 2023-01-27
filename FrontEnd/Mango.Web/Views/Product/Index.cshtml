@@ -48,7 +48,10 @@
                     </td>
                     <td class="text-end">
                         <a asp-action="Item" class="btn btn-success" asp-route-productId="@item.ProductId"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger delete" data-productId="@item.ProductId"><i class="fas fa-trash"></i></a>
+                        @if (User.IsInRole(SD.Admin))
+                        {
+                            <a class="btn btn-danger delete" data-productId="@item.ProductId"><i class="fas fa-trash"></i></a>
+                        }
                     </td>
                 </tr>
             }

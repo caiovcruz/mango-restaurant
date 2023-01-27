@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mango.Web.Models;
 using Mango.Web.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -69,6 +70,7 @@ namespace Mango.Web.Controllers
         }
 
         [HttpGet("Delete")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int productId)
         {
             var response = await _productService.GetProductByIdAsync<ResponseDto>(productId);
@@ -82,13 +84,14 @@ namespace Mango.Web.Controllers
         }
 
         [HttpPost("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(ProductDto model)
         {
             if (ModelState.IsValid)
             {
                 var response = await _productService.DeleteProductAsync<ResponseDto>(model.ProductId);
-                if (response.IsSuccess)
+                if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(Index));
                 }

@@ -3,21 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 using Mango.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Mango.Web.Services.IServices;
+using Newtonsoft.Json;
 
 namespace Mango.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductService productService)
         {
             _logger = logger;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<ProductDto> products = new List<ProductDto>();
+            var response = await _productService.GetAllProductsAsync<ResponseDto>();
+            if (response?.Result != null && response?.IsSuccess == true)
+            {
+                products = JsonConvert.DeserializeObject<List<ProductDto>>(response.Result.ToString());
+            }
+
+            return View(products);
         }
 
         public IActionResult Privacy()

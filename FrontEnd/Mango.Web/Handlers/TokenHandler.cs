@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace Mango.Web.Handlers
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class TokenHandler : DelegatingHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

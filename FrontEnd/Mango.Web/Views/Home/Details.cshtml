@@ -1,0 +1,62 @@
+﻿@model ProductDto
+
+<form method="post">
+    <input asp-for="ProductId" hidden />
+    <div class="pt-2">
+        <div class="card container" style="border:1px solid #808080;">
+            <div class="card-header bg-dark text-light row" style="border-radius: 0px;">
+                <div class="col-8">
+                    <h1 class="text-white">@Model.Name</h1>
+                </div>
+                <div class="col-4 d-flex justify-content-end">
+                    <span class="badge bg-light text-dark align-self-center p-3 border">@Model.CategoryName</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-4 p-1 text-center">
+                            <img src="@Model.ImageUrl" style="border-radius:35px;" width="100%" class="rounded" />
+                        </div>
+                        <div class="col-12 col-lg-8">
+                            <div class="row pl-3" style="height:7em;">
+                                <div class="col-12">
+                                    <p class="text-secondary">@Html.Raw(Model.Description)</p>
+                                </div>
+                            </div>
+                            <div class="row p-3 mx-1 mt-3 border rounded">
+                                <div class="col-12 col-sm-6">
+                                    <input asp-for="Count" class="form-control count" min="0" max="100" />
+                                    <span asp-validation-for="Count" class="text-danger"></span>
+                                </div>
+                                <div class="col-12 col-sm-6 text-end">
+                                    <h3 class="text-warning price">@Model.Price.ToString("c")</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer row d-flex justify-content-between bg-light py-3">
+                <div class="col-5">
+                    <a asp-action="Index" class="btn btn-outline-secondary form-control">Back</a>
+                </div>
+                <div class="col-5">
+                    <button type="submit" class="btn btn-success form-control submit">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(".count").on("click", function () {
+            var quantity = $(this).val();
+            var newPrice = quantity * @Model.Price;
+            $(".price").html(newPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }))
+        });
+    </script>
+}

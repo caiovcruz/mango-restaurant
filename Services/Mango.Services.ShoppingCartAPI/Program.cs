@@ -1,11 +1,15 @@
+using Mango.Services.ShoppingCartAPI.Configurations;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDatabaseConfiguration(builder.Configuration);
+builder.Services.AddAutoMapperConfiguration();
+builder.Services.AddDependencyInjectionConfiguration();
+builder.Services.AddAuthConfiguration(builder.Configuration);
+builder.Services.AddSwaggerConfiguration();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -18,6 +22,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
